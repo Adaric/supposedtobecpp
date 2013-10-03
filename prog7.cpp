@@ -1,0 +1,209 @@
+#include<iostream>
+#include<cstdlib>
+#include<math.h>
+using namespace std;
+
+struct node
+{char data;
+node *left,*right;};
+
+
+node *root,*temp,*blank;
+
+char stack[50][2],loger;
+int index=0;
+
+int iter=0;
+node *queue[300];
+int f=0,l=-1;
+
+void enqueue(node *t)
+{l++;
+
+queue[l]=t;}
+
+struct node *dequeue()
+{if(f<=l)
+{node *t;
+
+t=queue[f];
+++f;
+
+return t;}
+}
+
+
+
+int level,level1=0;
+
+
+void read(char a)
+{int n;
+cout<<"Enter value level:"<<a<<endl;
+cin>>stack[iter][1];
+stack[iter][0]=a;
+iter++;
+
+
+cout<<"How many children?"<<endl;
+cin>>n;
+
+for(int i=0;i<n;i++)
+{read(a+1);}
+return;
+
+
+}
+
+
+//CONVERTER GENERIC TO BINARY
+int i=0;
+void converter(node *temp,int t)
+{
+if(root==NULL)
+{temp=(node*)malloc(sizeof(struct node));
+root=temp;
+temp->data=stack[i][1];
+temp->left=NULL;
+temp->right=NULL;
+loger=stack[t][0];
+i++;
+}
+
+
+cout<<temp->data;
+
+cout<<stack[t][0]<<stack[i][0];
+
+if(stack[i][0]>stack[t][0])
+{temp->left=(node*)malloc(sizeof(struct node));
+
+temp->left->data=stack[i][1];
+temp->left->left=NULL;
+temp->left->right=NULL;
+
+i++;
+
+converter(temp->left,t+1);
+loger=stack[t][0];}
+
+if(stack[i][0]==stack[t][0])
+{temp->right=(node*)malloc(sizeof(struct node));
+cout<<"wtf";
+
+temp->right->data=stack[i][1];
+temp->right->left=NULL;
+temp->right->right=NULL;
+
+i++;
+
+converter(temp->right,t);
+loger=stack[t][0];}
+
+/*
+if(stack[i][0]<loger)*/
+
+return;
+
+}
+
+//END OF CONVERTER
+
+
+
+
+//HERE"S THE FRIGGING LEVEL OREDER THAT FINALLY WORKS
+
+void output()
+{do
+{
+
+
+for(int i=0;i<30/(pow(2,level1));i++)
+{cout<<" ";}
+/*
+if(level1%2!=0)
+{cout<<"\t   ";}
+*/
+cout<<temp->data;
+index++;
+/*
+for(int i=0;i<30/(level1+2);i++)
+{cout<<" ";}
+*/
+
+if(index==pow(2,level1))
+{cout<<endl;
+level1++;
+//cout<<index;
+index=0;}
+
+
+if(temp->left!=NULL)
+enqueue(temp->left);
+else
+enqueue(blank);
+
+if(temp->right!=NULL)
+enqueue(temp->right);
+else
+enqueue(blank);
+
+
+
+if(temp==blank)
+{enqueue(blank);
+enqueue(blank);
+}
+
+
+temp=dequeue();
+
+
+
+/*
+//MY ADDITION FOR PRINTING IN LINES
+if(temp!=blank)
+{height(root);}
+//cout<<level1<<" # "<<level<<endl;
+if(level!=level1)
+{cout<<endl<<level<<endl;
+level1++;}
+index=0;
+//MY ADDITION FOR PRINTING IN LINES
+*/
+}
+while(f<=l);
+}
+
+//AND THAT LEVEL ORDER ENDS HERE
+
+
+
+
+
+int main()
+{
+char level='1';
+read(level);
+root=NULL;
+
+converter(root,0);
+
+//Print generic tree
+blank=(node*)malloc(sizeof(struct node));
+blank->data=' ';
+temp=root;
+/*
+for(int i=0;i<iter;i++)
+{
+for(char a='0';a<stack[i][0];a++)
+cout<<"\t";
+cout<<stack[i][0]<<"  "<<stack[i][1]<<endl;
+}*/
+//cout<<root->left->data;
+output();
+
+
+
+return 0;}

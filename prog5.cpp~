@@ -1,0 +1,168 @@
+#include<iostream>
+#include<cstdlib>
+using namespace std;
+
+
+struct node
+{char data;
+node *left,*right,*next;
+bool rth,lth;
+};
+
+node *root,*temp,*dummy,*blank;
+node *stack[100];
+
+
+
+void read(node *temp)
+{
+
+char t;
+if(temp==NULL)
+{cin>>t;
+temp=(node*)malloc(sizeof(struct node));
+temp->data=t;
+temp->rth=false;
+temp->lth=false;
+root=temp;
+//DUMMY CODE
+   dummy=(node*)malloc(sizeof(struct node));
+   dummy->data='#';
+   dummy->left=root;
+// DUMMY CODE END
+  }
+
+
+cout<<temp->data<<" has left child?";
+cin>>t;
+if(t=='y')
+{cin>>t;
+temp->left=(node*)malloc(sizeof(struct node));
+temp->left->data=t;
+temp->lth=false;
+
+read(temp->left);}
+else
+{temp->left=NULL;
+temp->lth=true;}
+
+
+
+cout<<temp->data<<" has right child?";
+cin>>t;
+if(t=='y')
+{cin>>t;
+temp->right=(node*)malloc(sizeof(struct node));
+temp->right->data=t;
+temp->rth=false;
+read(temp->right);}
+else
+{temp->right=NULL;
+temp->rth=true;}
+
+
+return;
+
+
+
+}
+
+
+int i=0;
+void inorder(node *temp)
+{
+
+if(temp->left!=NULL)
+inorder(temp->left);
+
+if(temp!=NULL)
+{//cout<<temp->data;
+stack[i]=temp;
+i++;}
+
+if(temp->right!=NULL)
+inorder(temp->right);
+
+return;
+
+}
+
+
+void threader()
+{
+inorder(root);
+
+for(int a=0;a<i;a++)
+{
+
+if(a<i-1 && stack[a]->rth)
+{stack[a]->right=stack[a+1];}
+
+if(a>0 && stack[a]->lth)
+{stack[a]->left=stack[a-1];}
+}
+}
+
+/*
+--------------------------------------------------------------------------
+inorder function
+--------------------------------------------------------------------------
+*/
+void print_inorder(node *temp,node *dummy)
+{
+while(temp->right!=NULL)
+{
+            while(!temp->lth)
+             temp=temp->left;
+   cout<<"  "<<temp->data;
+   while(temp->rth)
+   {
+   temp=temp->right;
+           
+            cout<<"  "<<temp->data;
+   }
+   temp=temp->right;}
+ cout<<"  "<<temp->data;
+  
+ }
+
+
+void print_preorder(node *temp,node *dummy)
+{
+while(temp!=NULL)
+{
+  cout<<"  "<<temp->data;
+
+
+            while(!temp->lth)
+             temp=temp->left;
+ 
+   while(temp->rth)
+   {
+   temp=temp->right;
+           
+            cout<<"  "<<temp->data;
+   }
+   temp=temp->right;}
+ cout<<"  "<<temp->data;
+  
+ }
+
+
+
+int main()
+{
+
+root=NULL;
+temp=NULL;
+
+read(root);
+threader();
+print_inorder(root,dummy);
+cout<<endl;
+/*cout<<root->data;
+cout<<root->left->data;
+cout<<root->right->data;*/
+return 0;}
+
+

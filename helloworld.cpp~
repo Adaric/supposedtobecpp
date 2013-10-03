@@ -1,0 +1,8 @@
+#include<iostream>
+#include<math.h>
+using namespace std;
+
+int main()
+{cout<<"Hello World";
+setCursorPos(100,100);
+return 0;}
